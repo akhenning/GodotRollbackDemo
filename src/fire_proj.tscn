@@ -1,0 +1,78 @@
+[gd_scene load_steps=10 format=3 uid="uid://bfi3tgbudgnkd"]
+
+[ext_resource type="Script" path="res://src/FireProj.gd" id="1_5cn3x"]
+[ext_resource type="Texture2D" uid="uid://nf47k2flk8sm" path="res://assets/fire_strip10.png" id="2_o326c"]
+[ext_resource type="Script" path="res://addons/godot-rollback-netcode/NetworkAnimationPlayer.gd" id="3_1mhmw"]
+[ext_resource type="Script" path="res://addons/godot-rollback-netcode/NetworkTimer.gd" id="4_qxo5c"]
+
+[sub_resource type="Animation" id="Animation_qu5aq"]
+resource_name = "Burn"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_a8826"]
+resource_name = "fire_loop"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qos3v"]
+_data = {
+"Burn": SubResource("Animation_qu5aq"),
+"fire_loop": SubResource("Animation_a8826")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vghf2"]
+size = Vector2(18, 23)
+
+[sub_resource type="GDScript" id="GDScript_vnglk"]
+
+[node name="FireProj" type="Area2D" groups=["network_sync"]]
+script = ExtResource("1_5cn3x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("2_o326c")
+hframes = 10
+
+[node name="FireAnimation" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Sprite2D")
+libraries = {
+"": SubResource("AnimationLibrary_qos3v")
+}
+script = ExtResource("3_1mhmw")
+
+[node name="FireProjTimer" type="Node" parent="." groups=["network_sync"]]
+script = ExtResource("4_qxo5c")
+wait_ticks = 120
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_vghf2")
+script = SubResource("GDScript_vnglk")
+
+[connection signal="area_entered" from="." to="CollisionShape2D" method="_on_fire_proj_area_entered"]
+[connection signal="timeout" from="FireProjTimer" to="." method="_on_fire_proj_timer_timeout"]
