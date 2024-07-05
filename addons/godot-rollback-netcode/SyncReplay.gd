@@ -99,7 +99,8 @@ func process_message(msg: Dictionary) -> void:
 			push_error("SyncReplay message has unknown type: %s" % type)
 
 func _change_scene(scene_path: String) -> void:
-	_scene_change_result = get_tree().change_scene_to_file(scene_path)
+	_scene_change_result = OK
+	#_scene_change_result = get_tree().change_scene_to_file(scene_path)
 
 func _do_setup_match1(my_peer_id: int, peer_ids: Array, match_info: Dictionary) -> void:
 	SyncManager.stop()

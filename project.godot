@@ -20,6 +20,7 @@ config/icon="res://assets/icon.svg"
 SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
 SyncDebugger="*res://addons/godot-rollback-netcode/SyncDebugger.gd"
 Settings="*res://src/Settings.gd"
+SyncReplay="*res://addons/godot-rollback-netcode/SyncReplay.gd"
 
 [editor_plugins]
 
@@ -98,6 +99,7 @@ p1_s={
 rollback/input_delay=0
 rollback/classes/message_serializer="res://src/CustomMessageSerializer.gd"
 rollback/debug/message_bytes=125
+rollback/debug/skip_nth_message=2
 
 [physics]
 

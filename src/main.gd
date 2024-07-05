@@ -7,6 +7,7 @@ const MAX_CONNECTIONS = 2
 @onready var port_field = $CanvasLayer/ConnectionPanel/GridContainer/PortField
 @onready var message_label = $CanvasLayer/MessageLabel
 @onready var sync_lost_label = $CanvasLayer/SyncLostLabel
+@onready var reset_button = $CanvasLayer/ResetButton
 #@onready var settings = $Settings
 var LOG_FILE_DIRECTORY = "C:/Users/ak7he/Documents/Documents/gitstuff/godot/logs"
 
@@ -43,12 +44,14 @@ func _ready() -> void:
 	
 	host_field.text = Settings.SERVER_IP
 	port_field.text = Settings.PORT
+	
+	#SyncManager.set_mechanized(true)
 
 
-	#if SyncReplay.active:
-	#	main_menu.visible = false
-	#	connection_panel.visible = false
-	#	reset_button.visible = false
+	if SyncReplay.active:
+		connection_panel.visible = false
+		connection_panel.visible = false
+		reset_button.visible = false
 
 
 func _on_server_button_pressed():
@@ -61,6 +64,7 @@ func _on_server_button_pressed():
 	
 	Settings.SERVER_IP = host_field.text
 	Settings.PORT = port_field.text
+	Settings.is_server_or_client = "SERVER"
 	print("Setting settings content to %s " % Settings.SERVER_IP)
 	print(" %s " % Settings.PORT)
 	#main_menu.visible = false
@@ -72,14 +76,15 @@ func _on_server_button_pressed():
 func _on_client_button_pressed():
 	Settings.SERVER_IP = host_field.text
 	Settings.PORT = port_field.text
+	Settings.is_server_or_client = "CLIENT"
 	
 	SyncManager.spectating = false
 	_start_client()
 	
 
-#func _on_SpectatorButton_pressed() -> void:
-#	SyncManager.spectating = true
-#	_start_client()
+func _on_SpectatorButton_pressed() -> void:
+	SyncManager.spectating = true
+	_start_client()
 
 func _start_client() -> void:
 	var peer = ENetMultiplayerPeer.new()
@@ -135,7 +140,7 @@ func register_player(options: Dictionary = {}) -> void:
 func _on_SyncManager_sync_started() -> void:
 	message_label.text = "Started!"
 
-	if logging_enabled:# and not SyncReplay.active:
+	if logging_enabled and not SyncReplay.active:
 		if not DirAccess.dir_exists_absolute(LOG_FILE_DIRECTORY):
 			DirAccess.make_dir_absolute(LOG_FILE_DIRECTORY)
 

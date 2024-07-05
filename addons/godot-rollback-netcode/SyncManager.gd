@@ -785,6 +785,7 @@ func _do_tick(is_rollback: bool = false) -> bool:
 	var previous_frame := get_input_frame(_current_tick - 1)
 
 	assert(input_frame != null, "Input frame for _current_tick is null")
+	
 
 	input_frame = _predict_missing_input(input_frame, previous_frame)
 
