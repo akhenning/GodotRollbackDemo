@@ -152,13 +152,13 @@ func send_hurt(_damage,f_position):
 #		#print("Sending hurt signal")
 #		emit_signal("hurt", damage,f_position)
 
-	var msg = "Collision at player = "
-	msg += str(position)
-	msg += " and fireball = "
-	msg += str(f_position)
-	msg += " FROM "
-	msg += Settings.is_server_or_client
-	push_warning ( msg )
+	#var msg = "Collision at player = "
+	#msg += str(position)
+	#msg += " and fireball = "
+	#msg += str(f_position)
+	#msg += " FROM "
+	#msg += Settings.is_server_or_client
+	#push_warning ( msg )
 	#if got_hit_once:
 	#	return
 	#got_hit_once = true

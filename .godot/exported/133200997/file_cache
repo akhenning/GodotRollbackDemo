@@ -1,0 +1,14 @@
+res://addons/godot-rollback-netcode/debugger/DebugOverlay.tscn::53f856d60662c59210ee674acb6d4f46::1718936507::res://.godot/exported/133200997/export-60cb64ff9b9bcdd284f7467e806042b5-DebugOverlay.scn
+res://addons/godot-rollback-netcode/debugger/PeerStatus.tscn::d2f3d8f7ffe574fafd92abd0ff240811::1718936507::res://.godot/exported/133200997/export-9e9dacf63f60ab7ebe3eeabb190ea620-PeerStatus.scn
+res://addons/godot-rollback-netcode/log_inspector/FrameDataGraph.tscn::79b8b84571557ddad645b12a0e6d5fbe::1718936508::res://.godot/exported/133200997/export-2b508d9f9f9f67a23c21da4d366aedf7-FrameDataGraph.scn
+res://addons/godot-rollback-netcode/log_inspector/FrameDataGraphCanvas.tscn::f2eb0d11c11cb027ae6388cb844b5f5a::1718936508::res://.godot/exported/133200997/export-6a5c982fb283d525d469a879dfe41095-FrameDataGraphCanvas.scn
+res://addons/godot-rollback-netcode/log_inspector/FrameDataGrid.tscn::70fb370b3276298aa13557c75690e9da::1718936508::res://.godot/exported/133200997/export-f5d0a8e9b3f2e1dbb151d65476fb8c21-FrameDataGrid.scn
+res://addons/godot-rollback-netcode/log_inspector/FrameViewer.tscn::b3d077b16eee0c500557819b4e64d2b7::1718936508::res://.godot/exported/133200997/export-8caaa14a3f197b54418c7640a8c2f587-FrameViewer.scn
+res://addons/godot-rollback-netcode/log_inspector/FrameViewerSettingsDialog.tscn::f4ced89fe25e2afc2bc44a68183e1c21::1718936508::res://.godot/exported/133200997/export-4623f9e5d08712bf5f7368669a95c1ba-FrameViewerSettingsDialog.scn
+res://addons/godot-rollback-netcode/log_inspector/FrameViewerTimeOffsetSetting.tscn::b7a815bb5f5c0e849c0e64193f72d438::1718936508::res://.godot/exported/133200997/export-abc52c05573623a127cbfb37837c845b-FrameViewerTimeOffsetSetting.scn
+res://addons/godot-rollback-netcode/log_inspector/LogInspector.tscn::5332d0dab42a5373d3910915c28aad5c::1718936508::res://.godot/exported/133200997/export-181f929d6d56c5400aee2a3dbec937b1-LogInspector.scn
+res://addons/godot-rollback-netcode/log_inspector/ProgressDialog.tscn::1fd7627e32ee91d2a2215a8938953d4a::1718936508::res://.godot/exported/133200997/export-74a30ba341a849e6125736e79793fc43-ProgressDialog.scn
+res://addons/godot-rollback-netcode/log_inspector/StateInputViewer.tscn::b9618ecaa68fc44077e5a42be21461f6::1718936508::res://.godot/exported/133200997/export-6bf43d4fb8bafb3b7a8c2b5b01858ddb-StateInputViewer.scn
+res://src/fire_proj.tscn::1de6da47071051e750a0e6400e090800::1719709596::res://.godot/exported/133200997/export-00be3645ed7109d3ded4c8bf665bf366-fire_proj.scn
+res://src/main.tscn::f04ad30dab2d1379bda5ace9ea58af5a::1719709335::res://.godot/exported/133200997/export-dbe59258b6e7c5860bca2a5bbd0223c3-main.scn
+res://src/player.tscn::79a0f741ce3af19f8715c8b66b714ff0::1719709335::res://.godot/exported/133200997/export-72c93632c3ea568a74ac34a2d94923d8-player.scn

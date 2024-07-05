@@ -84,9 +84,9 @@ fixed_position_y = 26214400
 position = Vector2(200, 400)
 
 [node name="ClientPlayer" parent="." instance=ExtResource("2_2ta8s")]
-fixed_position_x = 39321600
+fixed_position_x = 52428800
 fixed_position_y = 26214400
-position = Vector2(600, 400)
+position = Vector2(800, 400)
 
 [node name="Settings" type="Node" parent="."]
 script = ExtResource("3_iir7k")

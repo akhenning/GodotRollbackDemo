@@ -33,10 +33,10 @@ func _network_spawn(data: Dictionary) -> void:
 func _network_process(_input: Dictionary) -> void:
 	if active:
 		for area in get_overlapping_areas():
-			print("overlapping area: %s" % area)
+			#print("overlapping area: %s" % area)
 			if area.get_path() != _player:
 				#print("Overlapping with something new. Player: %s" % _player)
-				push_warning ( "Projectile is overlapping with something.")
+				#push_warning ( "Projectile is overlapping with something.")
 				fire_timer.start(20)
 				active = false
 				if area.has_method("send_hurt"):

@@ -1,0 +1,5 @@
+res://src/player.tscn
+res://src/Player.gd
+res://src/main.tscn
+res://src/fire_proj.tscn
+res://src/FireProj.gd
