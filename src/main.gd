@@ -8,8 +8,9 @@ const MAX_CONNECTIONS = 2
 @onready var message_label = $CanvasLayer/MessageLabel
 @onready var sync_lost_label = $CanvasLayer/SyncLostLabel
 @onready var reset_button = $CanvasLayer/ResetButton
+@onready var uh_oh_label = $CanvasLayer/UhOhLabel
 #@onready var settings = $Settings
-var LOG_FILE_DIRECTORY = "C:/Users/ak7he/Documents/Documents/gitstuff/godot/logs"
+var LOG_FILE_DIRECTORY = "C:/Users/ak7he/Documents/Documents/gitstuff/godot//logs"
 
 # This will contain player info for every player,
 # with the keys being each player's unique IDs.
@@ -41,6 +42,8 @@ func _ready() -> void:
 	SyncManager.sync_lost.connect(self._on_SyncManager_sync_lost)
 	SyncManager.sync_regained.connect(self._on_SyncManager_sync_regained)
 	SyncManager.sync_error.connect(self._on_SyncManager_sync_error)
+	
+	Settings.set_uh_oh_text.connect(self.set_error_msg)
 	
 	host_field.text = Settings.SERVER_IP
 	port_field.text = Settings.PORT
@@ -194,7 +197,7 @@ func setup_match_for_replay(my_peer_id: int, peer_ids: Array, _match_info: Dicti
 	else:
 		client_peer_id = my_peer_id
 	$ClientPlayer.set_multiplayer_authority(client_peer_id)
+	
 
-
-
-
+func set_error_msg(msg: String):
+	uh_oh_label.text = msg

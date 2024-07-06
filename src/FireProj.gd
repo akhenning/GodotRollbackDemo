@@ -7,6 +7,8 @@ signal _disable_proj
 var _player = null
 var active = true
 
+const ONE_PIXEL := int(65536)
+
 func _ready():
 	pass
 	
@@ -23,11 +25,13 @@ func get_damage_properties():
 func _network_spawn(data: Dictionary) -> void:
 	_player = data['player']
 	#global_position = data['position'] + Vector2(25, -2)
-	fixed_position = data['position'] #+ SGFixedVector2(25, -2)
-	fixed_position.x += 25*65536
-	fixed_position.y += -2*65536
+	fixed_position.x = data['position'].x 
+	fixed_position.y = data['position'].y
+	fixed_position.x += 25*ONE_PIXEL
+	fixed_position.y += -2*ONE_PIXEL
 	fire_timer.start()
 	animation_player.play("fire_loop")
+	sync_to_physics_engine()
 
 # input is not used, but seems to be needed
 func _network_process(_input: Dictionary) -> void:
@@ -51,12 +55,13 @@ func _network_process(_input: Dictionary) -> void:
 	
 	#var velocity = Vector2(4, 0)
 	#global_position += velocity
-	fixed_position.x += 4*65536
+	fixed_position.x += 4*ONE_PIXEL
 	sync_to_physics_engine()
 
 func _on_fire_proj_timer_timeout():
 	SyncManager.despawn(self)
 
+# when I was on top of her trying to fire when she was also firing, we desynched.
 
 func _save_state() -> Dictionary:
 	var state = {

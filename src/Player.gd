@@ -64,28 +64,10 @@ func _predict_remote_input(previous_input: Dictionary, _ticks_since_real_input: 
 	return input
 
 func _network_process(input: Dictionary) -> void:
-	#var highest_damage_overlap = 0
-	#for area in get_overlapping_areas():
-		#print("overlapping area: %s" % area)
-		#print("Masters are %s" % self.get_path())
-		#print("and %s" % area.get_master())
-	#	if area.has_method("get_damage_properties") and area.get_master() != self.get_path():
-	#		var damage = area.get_damage_properties()
-	#		if damage > highest_damage_overlap:
-	#			highest_damage_overlap = damage
-			#print("Overlapping with hitbox. Has damage value: %s" % area.get_damage_properties())
-			
-	#	else:
-	#		print("Characters are overlapping.")
-	#if highest_damage_overlap != 0:
-	#	pass
-		#self.hurt(highest_damage_overlap)
-	
 	if curr_anim != Anim.NONE:
 		if (curr_anim == Anim.FIRE and anim_timer.ticks_left == 20):
 			SyncManager.spawn("FireProj", get_parent(), FireProj, { position = fixed_position, player = self.get_path() })
 	else:		
-		#print(input)
 		# Can only input things in idle (temp)
 		if input.is_empty():
 			return
@@ -109,6 +91,11 @@ func _network_process(input: Dictionary) -> void:
 		#	fixed_position.y = 1000
 		#elif fixed_position.y < 0:
 		#	fixed_position.y = 0
+		
+		#if Settings.is_server_or_client == "CLIENT" and Engine.max_fps != 50:
+		#	push_warning("Changing FPS")
+		#	Engine.max_fps = 59
+		#	await get_tree().create_timer(1).timeout
 		
 		if input.has("s"):
 			curr_anim = Anim.FIRE
@@ -147,7 +134,7 @@ func _load_state(state: Dictionary) -> void:
 	curr_anim = state['curr_anim']
 	sync_to_physics_engine()
 
-func send_hurt(_damage,f_position):
+func send_hurt(_damage,_f_position):
 #	if curr_anim != Anim.HURT:
 #		#print("Sending hurt signal")
 #		emit_signal("hurt", damage,f_position)
@@ -155,7 +142,7 @@ func send_hurt(_damage,f_position):
 	#var msg = "Collision at player = "
 	#msg += str(position)
 	#msg += " and fireball = "
-	#msg += str(f_position)
+	#msg += str(_f_position)
 	#msg += " FROM "
 	#msg += Settings.is_server_or_client
 	#push_warning ( msg )

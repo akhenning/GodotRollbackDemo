@@ -837,11 +837,13 @@ func _cleanup_buffers() -> bool:
 	while state_buffer.size() > max_buffer_size + 1:
 		var state_frame_to_retire: StateBufferFrame = state_buffer[0]
 		var input_frame = get_input_frame(state_frame_to_retire.tick + 1)
+		var has_some_issue = false
 		if input_frame == null:
 			var message = "Attempting to retire state frame %s, but input frame %s is missing" % [state_frame_to_retire.tick, state_frame_to_retire.tick + 1]
 			push_warning(message)
 			if _logger:
 				_logger.data['buffer_underrun_message'] = message
+			Settings.set_error_text("Warning: Uh, something is happening with connection.")
 			return false
 		if not input_frame.is_complete(_player_peers):
 			var missing: Array = input_frame.get_missing_peers(_player_peers)
@@ -856,8 +858,9 @@ func _cleanup_buffers() -> bool:
 			push_warning(message)
 			if _logger:
 				_logger.data['buffer_underrun_message'] = message
+			Settings.set_error_text("Warning: You have very bad frame lag or something similar, might disconnect.")
 			return false
-
+		
 		state_buffer.pop_front()
 		_state_buffer_start_tick += 1
 
@@ -908,6 +911,7 @@ func get_latest_input_from_peer(peer_id: int) -> Dictionary:
 	if peers.has(peer_id):
 		var peer: Peer = peers[peer_id]
 		var input_frame = get_input_frame(peer.last_remote_input_tick_received)
+		print("Input from peer?: %s" % input_frame)
 		if input_frame:
 			return input_frame.get_player_input(peer_id)
 	return {}
@@ -1051,13 +1055,13 @@ func _send_input_messages_to_peer(peer_id: int) -> void:
 			MessageSerializer.InputMessageKey.NEXT_HASH_TICK_REQUESTED: peer.last_remote_hash_tick_received + 1,
 			MessageSerializer.InputMessageKey.STATE_HASHES: state_hashes,
 		}
-
 		var bytes = _message_serializer.serialize_message(msg)
-
+		
 		# See https://gafferongames.com/post/packet_fragmentation_and_reassembly/
 		if debug_message_bytes > 0:
 			if bytes.size() > debug_message_bytes:
 				push_error("Sending message w/ size %s bytes" % bytes.size())
+				print(_message_serializer)
 
 		if _logger:
 			_logger.add_value("messages_sent_to_peer_%s_size" % peer_id, bytes.size())
@@ -1198,6 +1202,7 @@ func _physics_process(_delta: float) -> void:
 
 			# Check again if we're still getting input buffer underruns.
 			if not _cleanup_buffers():
+				#push_warning("Cleanup buffers failed.")
 				# This can happen if there's a fatal error in _cleanup_buffers().
 				if not _started:
 					return
@@ -1210,6 +1215,8 @@ func _physics_process(_delta: float) -> void:
 
 			# Check if our max lag is still greater than the min lag to regain sync.
 			if min_lag_to_regain_sync > 0 and _calculate_max_local_lag() > min_lag_to_regain_sync:
+				#push_warning("I think this is trying to regain sync.")
+				Settings.set_error_text("Connection is having difficulties, trying to regain sync.")
 				#print ("REGAINING SYNC: wait for local lag to reduce")
 				# Even when we're skipping ticks, still send input.
 				if not _spectating:
@@ -1217,7 +1224,8 @@ func _physics_process(_delta: float) -> void:
 				if _logger:
 					_logger.skip_tick(Logger.SkipReason.WAITING_TO_REGAIN_SYNC, start_time)
 				return
-
+			
+			Settings.set_error_text("")
 			# If we've reach this point, that means we've regained sync!
 			_ticks_spent_regaining_sync = 0
 			sync_regained.emit()
@@ -1228,6 +1236,7 @@ func _physics_process(_delta: float) -> void:
 
 		# Attempt to clean up buffers, but if we can't, that means we've lost sync.
 		elif not _cleanup_buffers():
+			Settings.set_error_text("Connection is having difficulties, trying to regain sync (2).")
 			# This can happen if there's a fatal error in _cleanup_buffers().
 			if not _started:
 				return
@@ -1241,6 +1250,9 @@ func _physics_process(_delta: float) -> void:
 			return
 
 		if _skip_ticks > 0:
+			if _skip_ticks>2:
+				Settings.set_error_text("Skipping ticks, opponent's game appears to be running slow?")
+				push_warning("Skipping ticks")
 			_skip_ticks -= 1
 			if _skip_ticks == 0:
 				for peer in _player_peers.values():
@@ -1252,6 +1264,8 @@ func _physics_process(_delta: float) -> void:
 				if _logger:
 					_logger.skip_tick(Logger.SkipReason.ADVANTAGE_ADJUSTMENT, start_time)
 				return
+		#else:
+			#Settings.set_error_text("")
 
 		if _calculate_skip_ticks():
 			# This means we need to skip some ticks, so may as well start now!
