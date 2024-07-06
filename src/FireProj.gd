@@ -80,4 +80,3 @@ func _load_state(state: Dictionary) -> void:
 	fixed_position.y = state['y']
 	active = state['active']
 	sync_to_physics_engine()
-	#sync_to_physics_engine()
