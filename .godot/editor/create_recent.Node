@@ -1,3 +1,5 @@
+Button
+HBoxContainer
 Label
 SGArea2D
 SGCollisionShape2D
@@ -7,8 +9,6 @@ Area2D
 CollisionShape2D
 NetworkAnimationPlayer
 Sprite2D
-Button
 LineEdit
 GridContainer
 GridMap
-PanelContainer

@@ -2,6 +2,9 @@ extends Node2D
 
 const MAX_CONNECTIONS = 2
 
+const DummyNetworkAdapter = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
+
+@onready var menu_panel = $CanvasLayer/MainMenuButtons
 @onready var connection_panel = $CanvasLayer/ConnectionPanel
 @onready var host_field = $CanvasLayer/ConnectionPanel/GridContainer/HostField
 @onready var port_field = $CanvasLayer/ConnectionPanel/GridContainer/PortField
@@ -53,7 +56,7 @@ func _ready() -> void:
 
 	if SyncReplay.active:
 		connection_panel.visible = false
-		connection_panel.visible = false
+		menu_panel.visible = false
 		reset_button.visible = false
 
 
@@ -63,6 +66,7 @@ func _on_server_button_pressed():
 	peer.create_server(int(port_field.text))
 	multiplayer.multiplayer_peer = peer
 	connection_panel.visible = false
+	menu_panel.visible = false
 	message_label.text = "Listening..."
 	
 	Settings.SERVER_IP = host_field.text
@@ -70,7 +74,6 @@ func _on_server_button_pressed():
 	Settings.is_server_or_client = "SERVER"
 	print("Setting settings content to %s " % Settings.SERVER_IP)
 	print(" %s " % Settings.PORT)
-	#main_menu.visible = false
 
 
 	#players[1] = player_info
@@ -94,7 +97,7 @@ func _start_client() -> void:
 	peer.create_client(host_field.text, int(port_field.text))
 	multiplayer.multiplayer_peer = peer
 	connection_panel.visible = false
-	#main_menu.visible = false
+	menu_panel.visible = false
 	message_label.text = "Connecting..."
 
 
@@ -201,3 +204,15 @@ func setup_match_for_replay(my_peer_id: int, peer_ids: Array, _match_info: Dicti
 
 func set_error_msg(msg: String):
 	uh_oh_label.text = msg
+
+
+func _on_online_button_pressed():
+	connection_panel.visible = true
+	menu_panel.visible = false
+	SyncManager.reset_network_adaptor()
+
+func _on_local_button_pressed():
+	SyncManager.network_adaptor = DummyNetworkAdapter.new()
+	SyncManager.start()
+	menu_panel.visible = false
+	$ClientPlayer.input_prefix = "p2_"
