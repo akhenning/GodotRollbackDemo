@@ -66,7 +66,7 @@ func _predict_remote_input(previous_input: Dictionary, _ticks_since_real_input: 
 func _network_process(input: Dictionary) -> void:
 	if curr_anim != Anim.NONE:
 		if (curr_anim == Anim.FIRE and anim_timer.ticks_left == 20):
-			SyncManager.spawn("FireProj", get_parent(), FireProj, { position = fixed_position, player = self.get_path() })
+			SyncManager.spawn("FireProj", get_parent(), FireProj, { x = fixed_position.x, y = fixed_position.y, player = self.get_path() })
 	else:		
 		# Can only input things in idle (temp)
 		if input.is_empty():

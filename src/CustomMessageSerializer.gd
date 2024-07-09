@@ -3,8 +3,8 @@ extends "res://addons/godot-rollback-netcode/MessageSerializer.gd"
 var v = false
 
 const input_path_mapping := {
-	'/root/Main/ServerPlayer': 1,
-	'/root/Main/ClientPlayer': 2,
+	'/root/Match/ServerPlayer': 1,
+	'/root/Match/ClientPlayer': 2,
 }
 
 enum HeaderFlags {

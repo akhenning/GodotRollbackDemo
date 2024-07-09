@@ -24,9 +24,14 @@ func get_damage_properties():
 
 func _network_spawn(data: Dictionary) -> void:
 	_player = data['player']
+	print(data)
+	#print(data['position'])
+	print(fixed_position)
+	#print(data['position'].x)
+	print(fixed_position.x)
 	#global_position = data['position'] + Vector2(25, -2)
-	fixed_position.x = data['position'].x 
-	fixed_position.y = data['position'].y
+	fixed_position.x = data['x']
+	fixed_position.y = data['y']
 	fixed_position.x += 25*ONE_PIXEL
 	fixed_position.y += -2*ONE_PIXEL
 	fire_timer.start()

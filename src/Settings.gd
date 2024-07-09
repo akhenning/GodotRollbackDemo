@@ -1,11 +1,23 @@
 extends Node
 
+
+enum GameState {
+	LOCAL,
+	ONLINE_HOST,
+	ONLINE_CLIENT,
+	SPECTATOR,
+}
+
 # Singleton to hold preferences information, and also handles the universally accessable
 # error display
 
 var PORT = "9999"
 var SERVER_IP = "127.0.0.1" # IPv4 localhost
 var is_server_or_client = ""
+var game_state = null
+var in_match = false
+var p1_character = 0
+var p2_character = 0
 
 
 var last_text_sent_to_error = ""

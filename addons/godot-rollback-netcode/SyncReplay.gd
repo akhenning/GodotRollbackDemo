@@ -32,6 +32,7 @@ func _ready() -> void:
 		if not connect_to_replay_server():
 			_show_error_and_quit("Unable to connect to replay server")
 			return
+		print("Connected to replay server.")
 
 func _show_error_and_quit(msg: String) -> void:
 	OS.alert(msg)
@@ -73,7 +74,8 @@ func poll() -> void:
 			get_tree().quit(1)
 
 func _process(delta: float) -> void:
-	poll()
+	if Settings.in_match:
+		poll()
 
 func process_message(msg: Dictionary) -> void:
 	if not msg.has('type'):

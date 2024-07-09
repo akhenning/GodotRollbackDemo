@@ -1,5 +1,12 @@
 res://src/main.tscn
 res://src/Player.gd
-res://src/main.gd
 res://src/player.tscn
 res://src/fire_proj.tscn
+res://src/match.tscn
+res://src/main.gd
+res://src/match.gd
+res://src/game_timer.tscn
+res://addons/godot-rollback-netcode/SyncManager.gd
+res://src/Settings.gd
+res://addons/godot-rollback-netcode/SyncReplay.gd
+res://src/FireProj.gd

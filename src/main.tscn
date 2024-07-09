@@ -1,11 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://4g4byete5xg3"]
+[gd_scene load_steps=3 format=3 uid="uid://4g4byete5xg3"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_6vi6m"]
-[ext_resource type="Script" path="res://src/GameTimer.gd" id="2_0btll"]
-[ext_resource type="PackedScene" uid="uid://e6hkedahwcbx" path="res://src/player.tscn" id="2_2ta8s"]
 [ext_resource type="Script" path="res://src/Settings.gd" id="3_iir7k"]
 
-[node name="Main" type="Node2D"]
+[node name="MainMenu" type="Node2D"]
 script = ExtResource("1_6vi6m")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -76,66 +74,17 @@ size_flags_horizontal = 3
 size_flags_vertical = 6
 text = "Client"
 
-[node name="MessageLabel" type="Label" parent="CanvasLayer"]
-offset_right = 1151.0
-offset_bottom = 54.0
-horizontal_alignment = 1
+[node name="Settings" type="Node" parent="."]
+script = ExtResource("3_iir7k")
 
-[node name="ResetButton" type="Button" parent="CanvasLayer"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -54.0
-offset_top = -31.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "RESET"
-
-[node name="SyncLostLabel" type="Label" parent="CanvasLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -71.0
-offset_bottom = 42.0
-grow_horizontal = 0
-
-[node name="GameTimer" type="Label" parent="CanvasLayer" groups=["network_sync"]]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -44.0
-offset_top = 47.0
-offset_right = 44.0
-offset_bottom = 72.0
-grow_horizontal = 2
-text = "00:00"
-horizontal_alignment = 2
-script = ExtResource("2_0btll")
-
-[node name="UhOhLabel" type="Label" parent="CanvasLayer"]
+[node name="UhOhLabel" type="Label" parent="Settings"]
 offset_left = 478.0
 offset_top = 57.0
 offset_right = 518.0
 offset_bottom = 80.0
-
-[node name="ServerPlayer" parent="." instance=ExtResource("2_2ta8s")]
-fixed_position_x = 13107200
-fixed_position_y = 26214400
-position = Vector2(200, 400)
-
-[node name="ClientPlayer" parent="." instance=ExtResource("2_2ta8s")]
-fixed_position_x = 52428800
-fixed_position_y = 26214400
-position = Vector2(800, 400)
-
-[node name="Settings" type="Node" parent="."]
-script = ExtResource("3_iir7k")
 
 [connection signal="pressed" from="CanvasLayer/MainMenuButtons/LocalButton" to="." method="_on_local_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenuButtons/OnlineButton" to="." method="_on_online_button_pressed"]
 [connection signal="button_down" from="CanvasLayer/ConnectionPanel/GridContainer/ServerButton" to="." method="_on_server_button_button_down"]
 [connection signal="pressed" from="CanvasLayer/ConnectionPanel/GridContainer/ServerButton" to="." method="_on_server_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ConnectionPanel/GridContainer/ClientButton" to="." method="_on_client_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/ResetButton" to="." method="_on_reset_button_pressed"]

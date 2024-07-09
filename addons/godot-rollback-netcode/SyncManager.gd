@@ -8,6 +8,8 @@ const HashSerializer = preload("res://addons/godot-rollback-netcode/HashSerializ
 const Logger = preload("res://addons/godot-rollback-netcode/Logger.gd")
 const DebugStateComparer = preload("res://addons/godot-rollback-netcode/DebugStateComparer.gd")
 
+var nodes = {}
+
 class Peer extends RefCounted:
 	var _peer_id: int
 	var peer_id: int:
@@ -513,9 +515,11 @@ func start_logging(log_file_path: String, match_info: Dictionary = {}) -> void:
 	if not _logger:
 		_logger = Logger.new(self)
 	else:
+		print("Stopping logging?")
 		_logger.stop()
 
 	if _logger.start(log_file_path, _network_adaptor.get_unique_id(), match_info) != OK:
+		push_warning("Immediately cancelling logging for some reason.")
 		stop_logging()
 
 func stop_logging() -> void:
@@ -667,11 +671,21 @@ func _call_save_state() -> Dictionary:
 				state[node_path] = node._save_state()
 
 	return state
+	
+func add_nodes_to_sync_manager_for_replay_debugging(node_paths):
+	for i in node_paths:
+		print(i)
+		nodes[i] = node_paths[i]
+	print("New nodes: %s " % nodes)
 
 func _call_load_state(state: Dictionary) -> void:
 	for node_path in state:
 		if node_path == '$':
 			continue
+		#print("Nodes: %s" % nodes)
+		#print("Current path is %s" % self.get_path() )
+		#print("Current scene is %s" % get_tree().get_current_scene())
+		#print("Looking for node %s" % node_path)
 		var node = get_node_or_null(node_path)
 		assert(node != null, "Unable to restore state to missing node: %s" % node_path)
 		if node and node.has_method('_load_state'):
